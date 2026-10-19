@@ -6,6 +6,7 @@
 # Pricing: $0.05/image (1K), $0.07/image (2K); image input $0.01/image (not token-based; no [cost] authored)
 # Release: dated alias grok-imagine-image-quality-20260403; also aliased as grok-imagine-image-quality-latest, grok-imagine-image-pro
 schema = 2
+type = "image"
 name = "Grok Imagine Image Quality"
 description = "Higher-fidelity Grok Imagine image model for prompt-driven generation, editing, and visual design workflows"
 family = "grok"

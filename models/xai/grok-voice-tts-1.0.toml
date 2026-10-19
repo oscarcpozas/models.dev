@@ -1,4 +1,5 @@
 schema = 2
+type = "speech"
 name = "Grok Voice TTS 1.0"
 description = "Convert text into spoken audio with a single API call. The API supports a rich set of expressive voices, inline speech tags for fine-grained delivery control, and output formats from high-fidelity MP3 to telephony-optimized μ-law."
 open_weights = false

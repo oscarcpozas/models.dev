@@ -3,6 +3,7 @@
 # - https://docs.x.ai/developers/models/grok-imagine-video-1.5
 # - https://docs.x.ai/docs/guides/video-generation
 schema = 2
+type = "video"
 name = "Grok Imagine Video 1.5"
 description = "Video model for image-to-video generation, editing, and extension workflows"
 family = "grok"

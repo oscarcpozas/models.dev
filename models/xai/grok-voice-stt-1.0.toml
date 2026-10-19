@@ -1,4 +1,5 @@
 schema = 2
+type = "transcription"
 name = "Grok Voice STT 1.0"
 description = "Grok Voice STT 1.0 is xAI's speech-to-text model. It supports transcription with word-level timestamps, optional speaker diarization, and multichannel audio."
 open_weights = false
