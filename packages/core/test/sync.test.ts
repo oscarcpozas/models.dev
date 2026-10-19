@@ -1225,6 +1225,21 @@ test("tracks missing models except for unreliable first-party inventories", () =
   expect(xai.trackMissingModels).not.toBe(false);
 });
 
+test("keeps xAI voice models that no models endpoint lists", () => {
+  const models = xai.parseModels({ models: [] });
+  const voice = models.find((model) => model.id === "grok-voice-3.0");
+  expect(voice).toBeDefined();
+  expect(xai.sourceID(voice!)).toBeUndefined();
+
+  const authored = { base_model: "xai/grok-voice-3.0", reasoning: true };
+  const context = {
+    existing: () => undefined,
+    authored: (id: string) => (id === "grok-voice-3.0" ? authored : undefined),
+  } as any;
+  expect(xai.translateModel(voice!, context)).toEqual({ id: "grok-voice-3.0", model: authored });
+  expect(xai.translateModel(models.find((model) => model.id === "grok-tts")!, context)).toBeUndefined();
+});
+
 test("tracks public Google model families but not opaque internal IDs", () => {
   expect(shouldTrackGoogleModel("gemini-3.1-flash-live-preview")).toBe(true);
   expect(shouldTrackGoogleModel("imagen-4.0-generate-001")).toBe(true);
