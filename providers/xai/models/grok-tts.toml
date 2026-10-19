@@ -6,4 +6,4 @@
 # Not listed by the models endpoints, so xAI sync keeps this file as authored.
 # Pricing is per character, which v1 cost can't express; no [cost] authored.
 schema = 2
-base_model = "xai/grok-voice-tts-1.0"
+base_model = "xai/grok-tts"

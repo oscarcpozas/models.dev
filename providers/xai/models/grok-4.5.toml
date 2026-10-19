@@ -1,6 +1,6 @@
 # Sources (docs.x.ai):
 # - Model page: https://docs.x.ai/developers/models/grok-4.5
-# - Models/pricing: https://docs.x.ai/developers/models, https://docs.x.ai/developers/pricing
+# - Models/pricing: https://docs.x.ai/developers/models, https://docs.x.ai/developers/pricing (long context: prompts ≥ 200k tokens)
 # - Reasoning: https://docs.x.ai/developers/model-capabilities/text/reasoning
 # - Caching (automatic prefix cache, prompt_cache_key): https://docs.x.ai/developers/advanced-api-usage/prompt-caching
 # - Priority (service_tier = priority, 2x): https://docs.x.ai/developers/advanced-api-usage/priority-processing
@@ -13,7 +13,7 @@ input = ["text", "image/jpeg", "image/png", "application/pdf"]
 output = ["text"]
 
 [capabilities]
-reasoning = { supported = true, default = { type = "effort", value = "high" }, effort = ["low", "medium", "high"] }
+reasoning = { supported = true, default = { type = "effort", value = "high" }, effort = ["low", "medium", "high", "xhigh"] }
 structured_output = true
 system_updates = true
 store = true
@@ -27,7 +27,7 @@ price = 2
 cache = { read = 0.3 }
 
 [[cost.text.input.overrides]]
-when = { context = { gt = 200_000 } }
+when = { context = { gte = 200_000 } }
 price = 4
 cache = { read = 0.6 }
 
@@ -35,7 +35,7 @@ cache = { read = 0.6 }
 price = 6
 
 [[cost.text.output.overrides]]
-when = { context = { gt = 200_000 } }
+when = { context = { gte = 200_000 } }
 price = 12
 
 [[cost.multipliers]]

@@ -145,12 +145,13 @@ async function fetchTypedModels(key: string, endpoint: string) {
 
 type Modality = "text" | "audio" | "image" | "video" | "pdf";
 
-function modalities(values: string[] | undefined, fallback: Modality[]) {
+// Text models that take images also take PDFs, which the API doesn't list.
+function modalities(values: string[] | undefined, fallback: Modality[], pdf = false) {
   const allowed = new Set<Modality>(["text", "audio", "image", "video", "pdf"]);
   const result = (values ?? [])
     .map((value) => value.toLowerCase())
     .filter((value): value is Modality => allowed.has(value as Modality));
-  if (result.includes("image")) result.push("pdf");
+  if (pdf && result.includes("image")) result.push("pdf");
   return [...new Set(result.length > 0 ? result : fallback)];
 }
 
@@ -225,8 +226,8 @@ export function buildXAIModel(model: XAIModel, existing: ExistingModel): SyncedM
     throw new Error(`xAI model ${model.id} has incomplete local TOML metadata required for sync`);
   }
 
-  const input = modalities(model.input_modalities, existing.modalities?.input ?? ["text"]);
   const output = modalities(model.output_modalities, existing.modalities?.output ?? ["text"]);
+  const input = modalities(model.input_modalities, existing.modalities?.input ?? ["text"], output.includes("text"));
 
   const values = {
     name,

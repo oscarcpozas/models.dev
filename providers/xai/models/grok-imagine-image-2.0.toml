@@ -5,10 +5,3 @@
 # Pricing is per image (by quality and resolution), which v1 cost can't express; no [cost] authored.
 schema = 2
 base_model = "xai/grok-imagine-image-2.0"
-
-[modalities]
-input = ["text", "image", "application/pdf"]
-output = ["image", "application/pdf"]
-
-[limit]
-context = 64_000

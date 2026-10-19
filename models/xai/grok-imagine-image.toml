@@ -13,8 +13,8 @@ open_weights = false
 release_date = "2026-01-28"
 
 [modalities]
-input = ["text", "image", "application/pdf"]
-output = ["image", "application/pdf"]
+input = ["text", "image"]
+output = ["image"]
 
 [capabilities]
 tools = { supported = false }

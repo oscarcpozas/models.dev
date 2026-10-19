@@ -152,9 +152,11 @@ function costV2ToV1(cost: CostV2) {
   const contextTiers = new Map<number, Record<string, unknown>>();
   const tier = (when: CostWhenV2) => {
     const keys = Object.keys(when);
-    const size = keys.length === 1 ? (when.context as { gt?: unknown } | undefined)?.gt : undefined;
+    // A v1 tier only has the size where its band starts, so `gt` and `gte` both map to it.
+    const context = keys.length === 1 ? (when.context as { gt?: unknown; gte?: unknown } | undefined) : undefined;
+    const size = context?.gt ?? context?.gte;
     if (typeof size !== "number") {
-      throw new Error(`v1 cost tiers only support { context: { gt } }, got ${JSON.stringify(when)}`);
+      throw new Error(`v1 cost tiers only support { context: { gt | gte } }, got ${JSON.stringify(when)}`);
     }
     let entry = contextTiers.get(size);
     if (entry === undefined) {

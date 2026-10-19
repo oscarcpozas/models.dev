@@ -172,7 +172,7 @@ function patchCost(current: Doc, next: Doc, modeTiers: Set<string>): Doc {
       patchPrices(target, source);
       const overrides: Doc[] = [];
       for (const override of source.overrides ?? []) {
-        const match = target.overrides?.find((item: Doc) => stable(item.when) === stable(override.when));
+        const match = target.overrides?.find((item: Doc) => sameTier(item.when, override.when));
         if (match === undefined) overrides.push(override);
         else overrides.push(patchPrices(match, override));
       }
@@ -226,6 +226,14 @@ function patchPrices(target: Doc, source: Doc) {
 function isContextTier(when: unknown) {
   const keys = Object.keys((when ?? {}) as object);
   return keys.length === 1 && keys[0] === "context";
+}
+
+// v1 tiers only carry a size, so a file's `gte` tier matches a synced `gt` tier
+// at the same size, and keeps its own operator.
+function sameTier(a: unknown, b: unknown) {
+  if (stable(a) === stable(b)) return true;
+  const size = (when: any) => when?.context?.gt ?? when?.context?.gte;
+  return isContextTier(a) && isContextTier(b) && size(a) !== undefined && size(a) === size(b);
 }
 
 // Compares two v1 models the way v2 files can express them: v2 always states

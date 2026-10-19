@@ -1,10 +1,13 @@
 # Sources (docs.x.ai):
 # - Model page: https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309
-# - Models/pricing: https://docs.x.ai/developers/models, https://docs.x.ai/developers/pricing
+# - Models/pricing: https://docs.x.ai/developers/models, https://docs.x.ai/developers/pricing (long context: prompts ≥ 200k tokens)
 # - Reasoning: https://docs.x.ai/developers/model-capabilities/text/reasoning
 # - Caching (automatic prefix cache, prompt_cache_key): https://docs.x.ai/developers/advanced-api-usage/prompt-caching
 # - Priority (service_tier = priority, 2x): https://docs.x.ai/developers/advanced-api-usage/priority-processing
 # - API params (store, stream_options.include_usage, top_k): https://docs.x.ai/developers/rest-api-reference/inference/responses, https://docs.x.ai/developers/rest-api-reference/inference/chat-completions
+# Responses API only: Chat Completions rejects multi-agent requests, so stream_usage doesn't apply.
+# Client-side function tools need beta access ("Client-side tools for multi-agent models require
+# beta access", live API 2026-10-19), so tools stay off for general access.
 schema = 2
 name = "Grok 4.20 Multi-Agent"
 description = "Grok model for agentic tool use, reasoning, coding, and live assistance"
@@ -25,7 +28,6 @@ top_p = true
 top_k = true
 system_updates = true
 store = true
-stream_usage = true
 prompt_cache_key = true
 cache = { supported = true, implicit = true, explicit = false }
 service_tier = ["priority"]
@@ -39,7 +41,7 @@ price = 1.25
 cache = { read = 0.2 }
 
 [[cost.text.input.overrides]]
-when = { context = { gt = 200_000 } }
+when = { context = { gte = 200_000 } }
 price = 2.5
 cache = { read = 0.4 }
 
@@ -47,7 +49,7 @@ cache = { read = 0.4 }
 price = 2.5
 
 [[cost.text.output.overrides]]
-when = { context = { gt = 200_000 } }
+when = { context = { gte = 200_000 } }
 price = 5
 
 [[cost.multipliers]]

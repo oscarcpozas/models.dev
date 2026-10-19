@@ -1,6 +1,6 @@
 # Sources (docs.x.ai):
 # - Model page: https://docs.x.ai/developers/models/grok-4.7
-# - Models/pricing: https://docs.x.ai/developers/models, https://docs.x.ai/developers/pricing
+# - Models/pricing: https://docs.x.ai/developers/models, https://docs.x.ai/developers/pricing (long context: prompts ≥ 200k tokens)
 # - Reasoning: https://docs.x.ai/developers/model-capabilities/text/reasoning
 # - Caching (automatic prefix cache, prompt_cache_key): https://docs.x.ai/developers/advanced-api-usage/prompt-caching
 # - Priority (service_tier = priority, 2x): https://docs.x.ai/developers/advanced-api-usage/priority-processing
@@ -24,7 +24,7 @@ price = 2
 cache = { read = 0.5 }
 
 [[cost.text.input.overrides]]
-when = { context = { gt = 200_000 } }
+when = { context = { gte = 200_000 } }
 price = 4
 cache = { read = 1 }
 
@@ -32,7 +32,7 @@ cache = { read = 1 }
 price = 6
 
 [[cost.text.output.overrides]]
-when = { context = { gt = 200_000 } }
+when = { context = { gte = 200_000 } }
 price = 12
 
 [[cost.multipliers]]
